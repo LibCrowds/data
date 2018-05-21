@@ -1,0 +1,7 @@
+--index-url https://pypi.python.org/simple/
+
+pandas
+flatten_json
+requests
+dateutil
+
