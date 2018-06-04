@@ -10,6 +10,8 @@ from dateutil import parser
 from datetime import datetime
 from collections import OrderedDict
 
+from .get_tasks import get_tasks_df
+
 
 BASE_IRI = 'https://annotations.libcrowds.com'
 CONTAINER_ID = 'playbills-results'
