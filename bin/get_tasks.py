@@ -39,14 +39,16 @@ def get_tasks_df():
     """Load all of the chosen domain objects into a dataframe and return."""
     n_tasks = get_n_tasks()
     progress = tqdm.tqdm(desc='Downloading tasks', total=n_tasks, unit='tasks')
-    data = []
-    last_fetched = []
+    r = get_tasks()
+    last_fetched = r.json()
+    data = last_fetched
+    progress.update(len(last_fetched))
+    respect_rate_limits(r, progress)
     while _not_exhausted(last_fetched):
         r = get_tasks(len(data))
         last_fetched = r.json()
         data += last_fetched
-        n_fetched = len(last_fetched)
-        progress.update(n_fetched)
+        progress.update(len(last_fetched))
         respect_rate_limits(r, progress)
     progress.close()
     df = pandas.DataFrame(data)
