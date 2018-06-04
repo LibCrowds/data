@@ -55,7 +55,7 @@ def get_tasks_df():
 
 def _not_exhausted(last_fetched):
     """Check if the last fetched tasks were the last available."""
-    return len(last_fetched) == 0 or len(last_fetched) == 100
+    return len(last_fetched) == 100
 
 
 def respect_rate_limits(response, progress):
