@@ -65,10 +65,11 @@ def respect_rate_limits(response):
     reset_dt = datetime.datetime.fromtimestamp(float(reset))
     remaining = response.headers['x-ratelimit-remaining']
     if remaining == 0:
+        progress.write('Sleeping until rate limit refreshed, please wait...')
         while reset_dt > datetime.datetime.now():
             time.sleep(1)
 
 
 if __name__ == '__main__':
     df = get_tasks_df()
-    df.to_csv('../data/tasks.csv')
+    df.to_csv('data/tasks.csv')
