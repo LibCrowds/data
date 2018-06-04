@@ -48,7 +48,7 @@ def get_tasks_df():
         data += last_fetched
         n_fetched = len(last_fetched)
         progress.update(n_fetched)
-        respect_rate_limits(r)
+        respect_rate_limits(r, progress)
     progress.close()
     df = pandas.DataFrame(data)
     return df
@@ -59,7 +59,7 @@ def _not_exhausted(last_fetched):
     return len(last_fetched) == 0 or len(last_fetched) == 100
 
 
-def respect_rate_limits(response):
+def respect_rate_limits(response, progress):
     """If we have exceeded the rate limit sleep until it is refreshed."""
     reset = response.headers['x-ratelimit-reset']
     reset_dt = datetime.datetime.fromtimestamp(float(reset))
