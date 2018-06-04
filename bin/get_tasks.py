@@ -11,7 +11,6 @@ import requests
 import datetime
 
 
-
 BASE_URL = 'https://backend.libcrowds.com'
 
 
