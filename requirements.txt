@@ -3,5 +3,5 @@
 pandas
 flatten_json
 requests
-dateutil
-
+python-dateutil
+tqdm
