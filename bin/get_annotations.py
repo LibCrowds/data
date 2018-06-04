@@ -28,7 +28,7 @@ def get_annotations(page=0):
         'page': page
     })
     if r.status_code == 404:
-        return []
+        return None
     else:
         r.raise_for_status()
     return r
@@ -48,6 +48,8 @@ def get_annotations_df():
     while _not_exhausted(last_fetched):
         page += 1
         r = get_annotations(page)
+        if not r:  # 404
+            break
         last_fetched = r.json()['items']
         data += last_fetched
         progress.update(len(last_fetched))
