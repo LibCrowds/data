@@ -73,8 +73,8 @@ def run():
         if len(titles) > 0:
             title += ', et al'
         out.append({
-            'l-ark': lark.split('/iiif/')[-1],
-            'canvas-ark': source,
+            'l-ark': lark,
+            'canvas-ark': source.split('/iiif/')[-1],
             'title-summary': title
         })
 
