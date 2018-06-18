@@ -78,7 +78,7 @@ def run():
         lark = sorted_df.iloc[0]['lark']
         title = titles[0]
         if len(titles) > 0:
-            title += ', et al'
+            title += ', etc.'
 
         row = {
             'l-ark': lark,
