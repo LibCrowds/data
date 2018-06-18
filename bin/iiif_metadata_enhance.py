@@ -3,7 +3,7 @@
 Produce a CSV file used to enhance structural metadata in the IIIF manifests.
 """
 import tqdm
-import pandas
+import pandas as pd
 
 from get_annotations import get_annotations_df
 
@@ -58,6 +58,7 @@ def run():
     df = df[df['tag'] == 'title']
 
     df['x'], df['y'], df['w'], df['h'] = df['selector'].str.split(pat=',').str
+    df[['x', 'y', 'w', 'h']] = df[['x', 'y', 'w', 'h']].apply(pd.to_numeric)
 
     groups = df.groupby('source', as_index=False)
 
@@ -65,7 +66,7 @@ def run():
     for source, group_df in tqdm.tqdm(groups, desc='Processing',
                                       unit='annotation'):
 
-        sorted_df = group_df.sort_values(by=['x', 'y'])
+        sorted_df = group_df.sort_values(by=['y', 'x'], ascending=True)
 
         titles = sorted_df['transcription'].tolist()
         lark = sorted_df.iloc[0]['lark']
@@ -78,7 +79,7 @@ def run():
             'title-summary': title
         })
 
-    out_df = pandas.DataFrame(out)
+    out_df = pd.DataFrame(out)
     out_df.to_csv('out.csv', index=False, encoding='utf-8')
 
 if __name__ == "__main__":
