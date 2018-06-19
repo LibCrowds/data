@@ -10,6 +10,8 @@ import pandas
 import requests
 import datetime
 
+from helpers import write_to_csv
+
 
 BASE_URL = 'https://backend.libcrowds.com'
 
@@ -73,4 +75,4 @@ def respect_rate_limits(response, progress):
 
 if __name__ == '__main__':
     df = get_tasks_df()
-    df.to_csv('data/tasks.csv')
+    write_to_csv('tasks.csv')

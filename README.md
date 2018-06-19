@@ -8,10 +8,33 @@
 pip install -r requirements.txt
 ```
 
-### Usage
+## Usage
 
-The repository contains the following scripts, all of which will output data
-to the /data folder.
+The scripts contained in this repository are described below.
+
+### Download annotations
+
+Download all *In the Spotlight* annotations and load them into a pandas
+dataframe. If run as a standalone script, using the command below, the
+annotations will be output to a CSV file.
+
+```
+python bin/get_annotations.py
+```
+
+The CSV file will be saved to `data/annotations.csv`.
+
+## Download PYBOSSA tasks into a dataframe
+
+Download all PYBOSSA tasks and load them into a pandas dataframe. If run as
+a standalone script, using the command below, the task data will be output to
+a CSV file.
+
+```
+python bin/get_tasks.py
+```
+
+The CSV file will be saved to `data/tasks.csv`.
 
 ## MARC Template transformation
 
@@ -30,16 +53,6 @@ CSV files with values against Annotation IDs for each tag type
 
 ```
 python bin/transcriptions_to_csv.py
-```
-
-## Download PYBOSSA tasks into a dataframe
-
-The functions here are used within other scripts in this repository that
-require access to all of the PYBOSSA task data. It can also be run as a
-standalone script, in which case the tasks will be output to CSV.
-
-```
-python bin/get_tasks.py
 ```
 
 ## Generate index of titles for the IIIF manifests

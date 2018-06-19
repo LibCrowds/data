@@ -10,6 +10,8 @@ import pandas
 import requests
 import datetime
 
+from helpers import write_to_csv
+
 
 BASE_URL = 'https://annotations.libcrowds.com/annotations/playbills-results/'
 
@@ -37,8 +39,7 @@ def get_annotations(page=0):
 def get_annotations_df():
     """Load all annotations into a dataframe and return."""
     n_anno = get_n_annotations()
-    progress = tqdm.tqdm(desc='Downloading annotations', total=n_anno,
-                         unit='annotation')
+    progress = tqdm.tqdm(desc='Downloading', total=n_anno, unit='annotation')
     page = 0
     r = get_annotations(page)
     last_fetched = r.json()['items']
@@ -81,4 +82,4 @@ def respect_rate_limits(response, progress):
 
 if __name__ == '__main__':
     df = get_annotations_df()
-    df.to_csv('data/annotations.csv')
+    write_to_csv(df, 'annotations.csv')
