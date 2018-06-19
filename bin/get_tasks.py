@@ -40,7 +40,7 @@ def get_tasks(offset=0):
 def get_tasks_df():
     """Load all of the chosen domain objects into a dataframe and return."""
     n_tasks = get_n_tasks()
-    progress = tqdm.tqdm(desc='Downloading tasks', total=n_tasks, unit='tasks')
+    progress = tqdm.tqdm(desc='Downloading', total=n_tasks, unit='tasks')
     r = get_tasks()
     last_fetched = r.json()
     data = last_fetched
@@ -75,4 +75,4 @@ def respect_rate_limits(response, progress):
 
 if __name__ == '__main__':
     df = get_tasks_df()
-    write_to_csv('tasks.csv')
+    write_to_csv(df, 'tasks.csv')
