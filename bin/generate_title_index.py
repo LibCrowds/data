@@ -7,6 +7,7 @@ import tqdm
 import pandas as pd
 
 from get_annotations import get_annotations_df
+from helpers import write_to_csv
 
 
 def get_tag(body):
@@ -92,7 +93,8 @@ def run():
         out.append(row)
 
     out_df = pd.DataFrame(out)
-    out_df.to_csv('data/title_index.csv', encoding='utf8', index=False)
+    write_to_csv(out_df, 'title_index.csv')
+
 
 if __name__ == "__main__":
     run()
