@@ -7,31 +7,7 @@ import tqdm
 import pandas as pd
 
 from get_annotations import get_annotations_df
-from helpers import write_to_csv
-
-
-def get_tag(body):
-  if not isinstance(body, list):
-      body = [body]
-  try:
-      return [b['value'] for b in body if b['purpose'] == 'tagging'][0]
-  except IndexError:
-      return None
-
-
-def get_transcription(body):
-  if not isinstance(body, list):
-      body = [body]
-  try:
-      return [b['value'] for b in body if b['purpose'] == 'describing'][0]
-  except IndexError:
-      return None
-
-
-def get_source(target):
-    if isinstance(target, dict):
-        return target['source']
-    return target
+from helpers import write_to_csv, get_tag, get_transcription, get_source
 
 
 def get_fragment_selector(target):
