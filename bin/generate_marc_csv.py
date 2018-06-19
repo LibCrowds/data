@@ -137,7 +137,6 @@ def run():
 
         # Get volume metadata
         manifest_uri = group_df['partOf'].tolist()[0]
-        print manifest_uri
         volume_md = volume_md_df.loc[manifest_uri].to_dict()
 
         date_fields = get_date_fields(group_df)
