@@ -57,6 +57,7 @@ def get_tasks_df():
         respect_rate_limits(r, progress)
     progress.close()
     df = pandas.DataFrame(data)
+    df.set_index('id', inplace=True, verify_integrity=True)
     return df
 
 
