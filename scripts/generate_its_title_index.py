@@ -43,7 +43,8 @@ def add_fragment_selectors_to_cols(df):
 
 
 def run():
-    df = get_annotations_df()
+    url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
+    df = get_annotations_df(url)
     df = add_fields(df)
     df = filter_title_transcriptions(df)
     df = add_fragment_selectors_to_cols(df)

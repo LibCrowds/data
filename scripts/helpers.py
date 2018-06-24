@@ -43,7 +43,8 @@ def get_source(target):
 def get_volumes_df():
     """Return a dataframe containing metadata for each volume."""
     here = os.path.abspath(os.path.dirname(__file__))
-    in_path = os.path.join(os.path.dirname(here), 'metadata', 'volumes.csv')
+    in_path = os.path.join(os.path.dirname(here), 'metadata',
+                           'its_volumes.csv')
     df = pandas.read_csv(in_path)
     df.set_index('manifest_uri', inplace=True, verify_integrity=True)
     return df

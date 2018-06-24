@@ -18,11 +18,12 @@ The scripts contained in this repository are described below.
 ### Download annotations
 
 Download all annotations for a collection and load them into a pandas
-dataframe. If run as a standalone script, using the command below, the
-annotations will be output to a CSV file.
+dataframe. This functionality is used as part of the input for various other
+scripts in this repository. If run as a standalone script, using the command
+below, the annotations will be output to a CSV file.
 
 ```
-python scripts/get_annotations.py
+python scripts/get_annotations.py http://annotations.libcrowds.com/annotations/my-collection
 ```
 
 The CSV file will be saved to `data/annotations.csv`.
@@ -30,9 +31,10 @@ The CSV file will be saved to `data/annotations.csv`.
 
 ### Download PYBOSSA tasks
 
-Download all PYBOSSA tasks and load them into a pandas dataframe. If run as
-a standalone script, using the command below, the task data will be output to
-a CSV file.
+Download all PYBOSSA tasks and load them into a pandas dataframe. This
+functionality is used as part of the input for various other scripts in this
+repository. If run as a standalone script, using the command below, the task
+data will be output to a CSV file.
 
 ```
 python scripts/get_tasks.py
@@ -66,14 +68,3 @@ python scripts/generate_its_marc_csv.py
 ```
 
 The CSV file will be saved to `data/its_marc.csv`.
-
-
-### Transcriptions to CSV
-
-Download all Playbills transcription Annotations and output a set of basic
-CSV files with values against Annotation IDs for each tag type
-(title, genre, date etc.).
-
-```
-python scripts/transcriptions_to_csv.py
-```

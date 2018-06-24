@@ -125,7 +125,8 @@ def add_fields(df):
 
 
 def run():
-    df = get_annotations_df()
+    url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
+    df = get_annotations_df(url)
     df = add_fields(df)
 
     df = df[df['motivation'] == 'describing']
