@@ -38,7 +38,7 @@ def get_annotations(url, page=0):
     return r
 
 
-def get_annotations_df(url):
+def get_annotations_df(url, page_limit=None):
     """Load all annotations into a dataframe and return."""
     n_anno = get_n_annotations(url)
     progress = tqdm.tqdm(desc='Downloading', total=n_anno, unit='annotation')
@@ -52,6 +52,8 @@ def get_annotations_df(url):
         page += 1
         r = get_annotations(url, page)
         if not r:  # 404
+            break
+        if page > page_limit:
             break
         last_fetched = r.json()['items']
         data += last_fetched
