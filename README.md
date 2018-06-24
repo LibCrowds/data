@@ -1,6 +1,6 @@
-# Playbills Scripts
+# LibCrowds Data
 
-> Data management scripts for the In the Spotlight projects on LibCrowds
+> Data management scripts for LibCrowds projects.
 
 
 ## Installation
@@ -17,12 +17,12 @@ The scripts contained in this repository are described below.
 
 ### Download annotations
 
-Download all *In the Spotlight* annotations and load them into a pandas
+Download all annotations for a collection and load them into a pandas
 dataframe. If run as a standalone script, using the command below, the
 annotations will be output to a CSV file.
 
 ```
-python bin/get_annotations.py
+python scripts/get_annotations.py
 ```
 
 The CSV file will be saved to `data/annotations.csv`.
@@ -35,13 +35,13 @@ a standalone script, using the command below, the task data will be output to
 a CSV file.
 
 ```
-python bin/get_tasks.py
+python scripts/get_tasks.py
 ```
 
 The CSV file will be saved to `data/tasks.csv`.
 
 
-### Generate title index
+### Generate In The Spotlight title index
 
 Get the first appearing title on each sheet, followed by "etc." for
 multiple titles. Return these as a CSV file mapping the related L-ARKs and
@@ -50,22 +50,22 @@ metadata in the IIIF manifests, generating an index of titles in the Universal
 Viewer.
 
 ```
-python bin/generate_title_index.py
+python scripts/generate_its_title_index.py
 ```
 
-The CSV file will be saved to `data/title_index.csv`.
+The CSV file will be saved to `data/its_title_index.csv`.
 
 
-### Generate MARC template
+### Generate In The Spotlight MARC template
 
-Using the current results data, generate a CSV file containing a template
-to be passed to metadata services for the creation of MARC records.
+Generate a CSV file containing In The Spotlight results data to be passed to
+Metadata Services for the creation of MARC records.
 
 ```
-python bin/generate_marc_csv.py
+python scripts/generate_its_marc_csv.py
 ```
 
-The CSV file will be saved to `data/marc.csv`.
+The CSV file will be saved to `data/its_marc.csv`.
 
 
 ### Transcriptions to CSV
@@ -75,5 +75,5 @@ CSV files with values against Annotation IDs for each tag type
 (title, genre, date etc.).
 
 ```
-python bin/transcriptions_to_csv.py
+python scripts/transcriptions_to_csv.py
 ```

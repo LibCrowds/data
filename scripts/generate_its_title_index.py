@@ -69,7 +69,7 @@ def run():
         out.append(row)
 
     out_df = pd.DataFrame(out)
-    write_to_csv(out_df, 'title_index.csv')
+    write_to_csv(out_df, 'its_title_index.csv')
 
 
 if __name__ == "__main__":
