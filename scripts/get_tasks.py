@@ -9,10 +9,12 @@ import time
 import pandas
 import requests
 import datetime
+from diskcache import FanoutCache
 
 from helpers import write_to_csv
 
 
+CACHE = FanoutCache('../cache')
 BASE_URL = 'https://backend.libcrowds.com'
 
 
@@ -37,6 +39,7 @@ def get_tasks(offset=0):
     return r
 
 
+@CACHE.memoize(typed=True, expire=3600, tag='tasks')
 def get_tasks_df():
     """Load all of the chosen domain objects into a dataframe and return."""
     n_tasks = get_n_tasks()
