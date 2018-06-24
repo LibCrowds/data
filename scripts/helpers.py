@@ -40,6 +40,13 @@ def get_source(target):
     return target
 
 
+def get_task_id(generator):
+    """Get the PYBOSSA task ID from the annotation generator."""
+    for g in generator:
+        if 'api/task' in g['id']:
+            return g['id'].split('/')[-1]
+
+
 def get_volumes_df():
     """Return a dataframe containing metadata for each volume."""
     here = os.path.abspath(os.path.dirname(__file__))
