@@ -135,7 +135,7 @@ def get_marc_df():
     volume_md_df = get_volumes_df()
 
     out_data = []
-    for source, group_df in grouped:
+    for source, group_df in tqdm.tqdm(groups, desc='Processing', unit='item'):
 
         # Get volume metadata
         manifest_uri = group_df['partOf'].tolist()[0]
