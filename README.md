@@ -68,3 +68,14 @@ python scripts/generate_its_marc_csv.py
 ```
 
 The CSV file will be saved to `data/its_marc.csv`.
+
+### Generate In The Spotlight performances dataframe
+
+Generate a CSV file where each row contains the data collected for a specific
+performance (e.g. title, date, genre and theatre).
+
+```
+python scripts/generate_its_plays.py
+```
+
+The CSV file will be saved to `data/its_plays.csv`.
