@@ -38,12 +38,14 @@ def get_static_fields():
 
 
 def get_transcriptions_by_tag(group_df, tag):
+    """Return transcriptions for a given tag."""
     transcriptions_df = group_df[group_df['motivation'] == 'describing']
     transcriptions_df = transcriptions_df[transcriptions_df['tag'] == tag]
     return transcriptions_df['transcription'].tolist()
 
 
 def get_performance_timestamp(group_df):
+    """Return the timestamp of the performance."""
     transcriptions = get_transcriptions_by_tag(group_df, 'date')
     if not transcriptions:
         return None
@@ -113,6 +115,7 @@ def get_genre_fields(group_df, volume_md):
 
 
 def add_fields(df):
+    """Add fields to the dataframe."""
     df['tag'] = df['body'].apply(get_tag)
     df['transcription'] = df['body'].apply(get_transcription)
     df['source'] = df['target'].apply(get_source)
