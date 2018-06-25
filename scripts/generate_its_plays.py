@@ -12,22 +12,13 @@ from helpers import write_to_csv, get_tag, get_transcription, get_source
 from helpers import get_task_id, get_volumes_df
 
 
-def get_fragment_from_task(task_id, task_df):
+def fragment_from_task(task_id, task_df):
     """Get fragment selector from a PYBOSSA task."""
     try:
         task = task_df.loc[int(task_id)]
     except KeyError:
         return None
     return task['info']['target']['selector']['value']
-
-
-def get_task_link(task_id, task_df):
-    """Get the link from the PYBOSSA task."""
-    try:
-        task = task_df.loc[int(task_id)]
-    except KeyError:
-        return None
-    return task['info']['link']
 
 
 def get_df_from_tag(input_df, tag):
@@ -55,9 +46,43 @@ def add_volume_metadata(df):
     return df
 
 
+def merge_genres_df(df, genres_df):
+    """Merge genres by matching fragment selectors of related tasks."""
+    tasks_df = get_tasks_df()
+    genres_df['fragment'] = genres_df['task_id'].apply(fragment_from_task,
+                                                       args=(tasks_df,))
+    df['fragment'] = df['task_id_title'].apply(fragment_from_task,
+                                               args=(tasks_df,))
+    df = df.merge(genres_df[['genre', 'source', 'fragment']],
+                  on=['source', 'fragment'], how='left')
+    return df
+
+
+def merge_dates_df(df, dates_df):
+    """Merge the dates by matching on source."""
+    df = df.merge(dates_df[['date', 'source', 'task_id']], on='source',
+                  how='left', suffixes=('_title', '_date'))
+    return df
+
+
+def get_task_link(task_id, task_df):
+    """Get the link from the PYBOSSA task."""
+    try:
+        task = task_df.loc[int(task_id)]
+    except KeyError:
+        return None
+    return task['info']['link']
+
+
+def add_link(df):
+    """Add the link from one of the related tasks."""
+    tasks_df = get_tasks_df()
+    df['link'] = df['task_id_title'].apply(get_task_link, args=(tasks_df,))
+    return df
+
+
 def get_its_plays_df():
     """Return a dataframe of performances."""
-    tasks_df = get_tasks_df()
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
     df = get_annotations_df(url)
     df = add_fields(df)
@@ -67,23 +92,11 @@ def get_its_plays_df():
     dates_df = get_df_from_tag(df, 'date')
     genres_df = get_df_from_tag(df, 'genre')
 
-    # Take titles df as new base
     df = titles_df
-
-    # Merge dates
-    df = df.merge(dates_df[['date', 'source', 'task_id']], on='source',
-                  how='left', suffixes=('_title', '_date'))
-
-    # Merge genres using matching fragment selectors
-    genres_df['fragment'] = genres_df['task_id'].apply(get_fragment_from_task,
-                                                       args=(tasks_df,))
-    df['fragment'] = df['task_id_title'].apply(get_fragment_from_task,
-                                                       args=(tasks_df,))
-    df = df.merge(genres_df[['genre', 'source', 'fragment']],
-                  on=['source', 'fragment'], how='left')
-
+    df = merge_dates_df(df, dates_df)
+    df = merge_genres_df(df, genres_df)
     df = add_volume_metadata(df)
-    df['link'] = df['task_id_title'].apply(get_task_link, args=(tasks_df,))
+    df = add_link(df)
     df = df[['title', 'date', 'genre', 'link', 'theatre', 'city']]
     return df
 
