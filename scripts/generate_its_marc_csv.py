@@ -2,12 +2,7 @@
 """
 Output all current results data to a CSV template for MARC ingest.
 """
-import re
-import os
-import tqdm
-import json
 import pandas
-import requests
 import dateutil
 from dateutil import parser
 from datetime import datetime

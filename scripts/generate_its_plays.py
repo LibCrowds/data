@@ -2,8 +2,6 @@
 """
 Produce a CSV file containing aggregated data for each performance.
 """
-import json
-import tqdm
 import pandas as pd
 
 from get_annotations import get_annotations_df
