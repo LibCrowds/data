@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 """
-Download all In the Spotlight results annotations and load into a dataframe.
+Download all annotations for a collection and load into a dataframe.
 
 If run from as a standalone script the dataframe is saved as a CSV.
 """
