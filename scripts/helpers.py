@@ -3,6 +3,10 @@ Helper functions.
 """
 import os
 import pandas
+from diskcache import FanoutCache
+
+
+CACHE = FanoutCache('../cache')
 
 
 def write_to_csv(df, fn):

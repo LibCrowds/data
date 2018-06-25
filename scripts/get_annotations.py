@@ -11,13 +11,8 @@ import click
 import pandas
 import requests
 import datetime
-from diskcache import FanoutCache
 
-from helpers import write_to_csv
-
-
-CACHE = FanoutCache('../cache')
-BASE_URL = 'https://annotations.libcrowds.com/annotations/playbills-results/'
+from helpers import write_to_csv, CACHE
 
 
 def get_n_annotations(url):

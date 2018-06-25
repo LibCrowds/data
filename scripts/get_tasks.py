@@ -9,12 +9,10 @@ import time
 import pandas
 import requests
 import datetime
-from diskcache import FanoutCache
 
-from helpers import write_to_csv
+from helpers import write_to_csv, CACHE
 
 
-CACHE = FanoutCache('../cache')
 BASE_URL = 'https://backend.libcrowds.com'
 
 
