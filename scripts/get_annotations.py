@@ -35,6 +35,26 @@ def get_annotations(url, page=0):
     return r
 
 
+def _not_exhausted(last_fetched):
+    """Check if the last fetched tasks were the last available."""
+    return len(last_fetched) != 0
+
+
+def respect_rate_limits(response, progress):
+    """If we have exceeded the rate limit sleep until it is refreshed."""
+    reset = response.headers.get('x-ratelimit-reset')
+    remaining = response.headers.get('x-ratelimit-remaining')
+    if not reset or not remaining:
+        # Rate limiting not implemented at the time of writing
+        return
+
+    reset_dt = datetime.datetime.fromtimestamp(float(reset))
+    if remaining == 0:
+        progress.write('Sleeping until rate limit refreshed, please wait...')
+        while reset_dt > datetime.datetime.now():
+            time.sleep(1)
+
+
 @CACHE.memoize(typed=True, expire=3600, tag='annotations')
 def get_annotations_df(url):
     """Load all annotations into a dataframe and return."""
@@ -58,26 +78,6 @@ def get_annotations_df(url):
     progress.close()
     df = pandas.DataFrame(data)
     return df
-
-
-def _not_exhausted(last_fetched):
-    """Check if the last fetched tasks were the last available."""
-    return len(last_fetched) != 0
-
-
-def respect_rate_limits(response, progress):
-    """If we have exceeded the rate limit sleep until it is refreshed."""
-    reset = response.headers.get('x-ratelimit-reset')
-    remaining = response.headers.get('x-ratelimit-remaining')
-    if not reset or not remaining:
-        # Rate limiting not implemented at the time of writing
-        return
-
-    reset_dt = datetime.datetime.fromtimestamp(float(reset))
-    if remaining == 0:
-        progress.write('Sleeping until rate limit refreshed, please wait...')
-        while reset_dt > datetime.datetime.now():
-            time.sleep(1)
 
 
 @click.command()

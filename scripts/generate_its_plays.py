@@ -2,12 +2,13 @@
 """
 Produce a CSV file containing aggregated data for each performance.
 """
+import click
 import pandas as pd
 
 from get_annotations import get_annotations_df
 from get_tasks import get_tasks_df
 from helpers import write_to_csv, get_tag, get_transcription, get_source
-from helpers import get_task_id, get_volumes_df
+from helpers import get_task_id, get_volumes_df, CACHE
 
 
 def fragment_from_task(task_id, task_df):
@@ -79,6 +80,7 @@ def add_link(df):
     return df
 
 
+@CACHE.memoize(typed=True, expire=3600, tag='its_plays')
 def get_its_plays_df():
     """Return a dataframe of performances."""
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
@@ -99,6 +101,11 @@ def get_its_plays_df():
     return df
 
 
-if __name__ == "__main__":
+@click.command()
+def main():
     df = get_its_plays_df()
     write_to_csv(df, 'its_plays.csv')
+
+
+if __name__ == "__main__":
+    main()

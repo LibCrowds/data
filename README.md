@@ -64,7 +64,7 @@ Generate a CSV file containing In The Spotlight results data to be passed to
 Metadata Services for the creation of MARC records.
 
 ```
-python scripts/generate_its_marc_csv.py
+python scripts/generate_its_marc.py
 ```
 
 The CSV file will be saved to `data/its_marc.csv`.

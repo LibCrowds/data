@@ -2,6 +2,7 @@
 """
 Output all current results data to a CSV template for MARC ingest.
 """
+import click
 import pandas
 import dateutil
 from dateutil import parser
@@ -11,7 +12,7 @@ from collections import OrderedDict
 from get_tasks import get_tasks_df
 from get_annotations import get_annotations_df
 from helpers import write_to_csv, get_tag, get_transcription, get_source
-from helpers import get_volumes_df
+from helpers import get_volumes_df, CACHE
 
 
 def get_static_fields():
@@ -122,7 +123,9 @@ def add_fields(df):
     return df
 
 
-def run():
+@CACHE.memoize(typed=True, expire=3600, tag='its_marc')
+def get_marc_df():
+    """Return the MARC template dataframe."""
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
     df = get_annotations_df(url)
     df = add_fields(df)
@@ -153,8 +156,14 @@ def run():
         out_data.append(row)
 
     out_df = pandas.DataFrame(out_data)
-    write_to_csv(out_df, 'its_marc.csv')
+    return out_df
+
+
+@click.command()
+def main():
+    df = get_marc_df()
+    write_to_csv(df, 'its_marc.csv')
 
 
 if __name__ == "__main__":
-    run()
+    main()
