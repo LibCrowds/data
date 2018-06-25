@@ -97,7 +97,7 @@ def get_its_plays_df():
     df = merge_genres_df(df, genres_df)
     df = add_volume_metadata(df)
     df = add_link(df)
-    df = df[['title', 'date', 'genre', 'link', 'theatre', 'city']]
+    df = df[['title', 'date', 'genre', 'link', 'theatre', 'city', 'source']]
     return df
 
 
