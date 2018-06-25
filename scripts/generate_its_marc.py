@@ -2,6 +2,7 @@
 """
 Output all current results data to a CSV template for MARC ingest.
 """
+import tqdm
 import click
 import pandas
 import dateutil
@@ -123,7 +124,7 @@ def add_fields(df):
     return df
 
 
-@CACHE.memoize(typed=True, expire=3600, tag='its_marc')
+# @CACHE.memoize(typed=True, expire=3600, tag='its_marc')
 def get_marc_df():
     """Return the MARC template dataframe."""
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
@@ -131,11 +132,11 @@ def get_marc_df():
     df = add_fields(df)
 
     df = df[df['motivation'] == 'describing']
-    grouped = df.groupby('source', as_index=False)
+    groups = df.groupby('source', as_index=False)
     volume_md_df = get_volumes_df()
 
     out_data = []
-    for source, group_df in grouped:
+    for source, group_df in tqdm.tqdm(groups, desc='Processing', unit='item'):
 
         # Get volume metadata
         manifest_uri = group_df['partOf'].tolist()[0]
@@ -154,7 +155,6 @@ def get_marc_df():
         row.update(date_fields)
         row.update(genre_fields)
         out_data.append(row)
-
     out_df = pandas.DataFrame(out_data)
     return out_df
 
