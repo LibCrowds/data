@@ -39,7 +39,7 @@ def add_fields(df):
 
 
 def add_volume_metadata(df):
-    """"""
+    """Add volume metadata to the dataframe."""
     volume_md_df = get_volumes_df()
     df = df.merge(volume_md_df[['theatre', 'city']], left_on='partOf',
                   right_on='manifest_uri', how='left')
