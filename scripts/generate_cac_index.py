@@ -51,6 +51,7 @@ def get_cac_index_df():
     df['reference'] = df['task_id'].apply(lookup_reference,
                                           args=(reference_df,))
 
+    df.drop_duplicates(subset=['reference'], inplace=True)
     return df[['control_number', 'reference']]
 
 
