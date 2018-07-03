@@ -100,3 +100,14 @@ python scripts/generate_its_tweets.py --all
 ```
 
 The CSV file will be saved to `data/its_tweets.csv`.
+
+### Generate Convert-a-Card index
+
+Generate the index of OCLC numbers against shelfmarks, required by metadata
+services for the creation of new MARC records.
+
+```
+python scripts/generate_cac_index.py
+```
+
+The CSV file will be saved to `data/cac_index.csv`.
