@@ -43,7 +43,7 @@ python scripts/get_tasks.py
 The CSV file will be saved to `data/tasks.csv`.
 
 
-### Generate In The Spotlight title index
+### Generate In the Spotlight title index
 
 Get the first appearing title on each sheet, followed by "etc." for
 multiple titles. Return these as a CSV file mapping the related L-ARKs and
@@ -58,9 +58,9 @@ python scripts/generate_its_title_index.py
 The CSV file will be saved to `data/its_title_index.csv`.
 
 
-### Generate In The Spotlight MARC template
+### Generate In the Spotlight MARC template
 
-Generate a CSV file containing In The Spotlight results data to be passed to
+Generate a CSV file containing In the Spotlight results data to be passed to
 Metadata Services for the creation of MARC records.
 
 ```
@@ -69,7 +69,7 @@ python scripts/generate_its_marc.py
 
 The CSV file will be saved to `data/its_marc.csv`.
 
-### Generate In The Spotlight performances dataframe
+### Generate In the Spotlight performances dataframe
 
 Generate a CSV file where each row contains the data collected for a specific
 performance (e.g. title, date, genre and theatre).
@@ -79,3 +79,24 @@ python scripts/generate_its_plays.py
 ```
 
 The CSV file will be saved to `data/its_plays.csv`.
+
+### Generate In the Spotlight Tweets
+
+Generate [#onthisday](https://twitter.com/hashtag/onthisday) tweets based on
+In the Spotlight performance data and save to CSV. The following command
+will produce a CSV file containing a tweet for each play performed on today's
+day and month. Note that the file may be blank if there is no data available
+for the given day and month.
+
+```
+python scripts/generate_its_tweets.py
+```
+
+It is also possible to produce tweets for every day and month by adding the
+`--all` argument.
+
+```
+python scripts/generate_its_tweets.py --all
+```
+
+The CSV file will be saved to `data/its_tweets.csv`.
