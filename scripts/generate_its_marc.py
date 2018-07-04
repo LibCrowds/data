@@ -124,7 +124,7 @@ def add_fields(df):
     return df
 
 
-# @CACHE.memoize(typed=True, expire=3600, tag='its_marc')
+@CACHE.memoize(typed=True, expire=3600, tag='its_marc')
 def get_marc_df():
     """Return the MARC template dataframe."""
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
