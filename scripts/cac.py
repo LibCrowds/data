@@ -2,16 +2,24 @@
 """
 Generate Convert-a-Card index of OCLC numbers against shelfmarks.
 """
+import os
 import re
 import csv
 import pandas
 import click
+from pymarc import MARCReader
 
 from get_pybossa_objects import get_pybossa_df
 from get_annotations import get_annotations_df
-from generate_cac_summary import get_cac_summary_df
 from helpers import write_to_csv, get_tag, get_task_id, get_transcription
-from helpers import CACHE, normalise_shelfmark
+from helpers import normalise_shelfmark
+
+
+def get_marc_file_paths():
+    """Return a list of paths to MARC metadata files."""
+    here = os.path.abspath(os.path.dirname(__file__))
+    path = os.path.join(os.path.dirname(here), 'metadata', 'convert-a-card')
+    return [os.path.join(path, fn) for fn in os.listdir(path)]
 
 
 def get_cac_annotations():
@@ -69,12 +77,12 @@ def add_shelfmark_column(df):
     return df
 
 
-def add_created_column(df):
-    """Add column to identify if a record has been created for a shelfmark."""
-    summary_df = get_cac_summary_df()
-    normalised_shelfmarks = summary_df['normalised_shelfmark'].tolist()
-    df['norm'] = df['shelfmark'].apply(normalise_shelfmark)
-    df['created'] = df['norm'].apply(lambda s: s in normalised_shelfmarks)
+def filter_new_items(df):
+    """Return rows where a record has not already been created."""
+    ingested_df = get_cac_ingested_df()
+    norm_sm = ingested_df['normalised_shelfmark'].tolist()
+    df['ingested'] = df['shelfmark'].apply(lambda s: normalise_shelfmark(s) in norm_sm)
+    df = df[~df.ingested]
     return df
 
 
@@ -94,14 +102,13 @@ def add_project_column(df):
     return df
 
 
-# @CACHE.memoize(typed=True, expire=3600, tag='cac_index')
 def get_cac_index_df():
     """Return the Convert-a-Card OCLC to shelfmark index as a dataframe."""
     df = get_cac_annotations()
     df = add_columns(df)
     df = df[df['motivation'] == 'describing']
     df = add_shelfmark_column(df)
-    df = add_created_column(df)
+    df = filter_new_items(df)
     df = add_project_column(df)
     df = df[df['tag'] == 'control_number']
     df = df.rename(columns={'transcription': 'control_number'})
@@ -116,10 +123,30 @@ def get_cac_index_df():
     ]]
 
 
+def get_cac_ingested_df():
+    """Return a summary of records already created from Convert-a-Card."""
+    paths = get_marc_file_paths()
+    out = []
+    for path in paths:
+        with open(path, 'rb') as f:
+            reader = MARCReader(f)
+            for record in reader:
+                out.append({
+                    'language': record['008'].data[35:38],
+                    'shelfmark': record['852']['j']
+                })
+    df = pandas.DataFrame(out)
+    df['normalised_shelfmark'] = df['shelfmark'].apply(normalise_shelfmark)
+    return df
+
+
 @click.command()
 def main():
     df = get_cac_index_df()
     write_to_csv(df, 'cac_index.csv')
+
+    df = get_cac_ingested_df()
+    write_to_csv(df, 'cac_ingested.csv')
 
 
 if __name__ == "__main__":
