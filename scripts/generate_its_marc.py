@@ -10,7 +10,6 @@ from dateutil import parser
 from datetime import datetime
 from collections import OrderedDict
 
-from get_tasks import get_tasks_df
 from get_annotations import get_annotations_df
 from helpers import write_to_csv, get_tag, get_transcription, get_source
 from helpers import get_volumes_df, CACHE

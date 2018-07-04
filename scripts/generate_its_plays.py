@@ -6,7 +6,7 @@ import click
 import pandas as pd
 
 from get_annotations import get_annotations_df
-from get_tasks import get_tasks_df
+from get_pybossa_objects import get_pybossa_df
 from helpers import write_to_csv, get_tag, get_transcription, get_source
 from helpers import get_task_id, get_volumes_df, CACHE
 
@@ -47,7 +47,7 @@ def add_volume_metadata(df):
 
 def merge_genres_df(df, genres_df):
     """Merge genres by matching fragment selectors of related tasks."""
-    tasks_df = get_tasks_df()
+    tasks_df = get_pybossa_df('task')
     genres_df['fragment'] = genres_df['task_id'].apply(fragment_from_task,
                                                        args=(tasks_df,))
     df['fragment'] = df['task_id_title'].apply(fragment_from_task,
@@ -75,7 +75,7 @@ def get_task_link(task_id, task_df):
 
 def add_link(df):
     """Add the link from one of the related tasks."""
-    tasks_df = get_tasks_df()
+    tasks_df = get_pybossa_df('task')
     df['link'] = df['task_id_title'].apply(get_task_link, args=(tasks_df,))
     return df
 

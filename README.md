@@ -29,18 +29,20 @@ python scripts/get_annotations.py http://annotations.libcrowds.com/annotations/m
 The CSV file will be saved to `data/annotations.csv`.
 
 
-### Download PYBOSSA tasks
+### Download PYBOSSA domain objects
 
-Download all PYBOSSA tasks and load them into a pandas dataframe. This
+Download PYBOSSA domain objects and load them into a pandas dataframe. This
 functionality is used as part of the input for various other scripts in this
 repository. If run as a standalone script, using the command below, the task
-data will be output to a CSV file.
+data will be output to a CSV file. The `<domain_object>` argument appended to
+the end of the script should be any valid PYBOSSA domain object, such as
+project, task, taskrun or result.
 
 ```
-python scripts/get_tasks.py
+python scripts/get_pybossa_objects.py <domain_object>
 ```
 
-The CSV file will be saved to `data/tasks.csv`.
+The CSV file will be saved to `data/{domain_object}.csv`.
 
 
 ### Generate In the Spotlight title index

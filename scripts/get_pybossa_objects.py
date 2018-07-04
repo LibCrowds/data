@@ -17,19 +17,9 @@ from helpers import write_to_csv, CACHE
 BASE_URL = 'https://backend.libcrowds.com'
 
 
-def get_n_tasks():
-    """Get the number of tasks on the server."""
-    r = requests.get(BASE_URL + '/stats/', headers={
-      'content-type': 'application/json'
-    })
-    r.raise_for_status()
-    n_tasks = r.json()['stats']['n_tasks']
-    return n_tasks
-
-
-def get_tasks(offset=0):
+def get_objects(obj, offset=0):
     """Get a set of domain objects."""
-    r = requests.get(BASE_URL + '/api/task', params={
+    r = requests.get(BASE_URL + '/api/{}'.format(obj), params={
         'offset': offset,
         'limit': 100,
         'all': 1
@@ -54,18 +44,17 @@ def respect_rate_limits(response, progress):
             time.sleep(1)
 
 
-@CACHE.memoize(typed=True, expire=3600, tag='tasks')
-def get_tasks_df():
+@CACHE.memoize(typed=True, expire=3600, tag='pybossa')
+def get_pybossa_df(obj):
     """Load all of the chosen domain objects into a dataframe and return."""
-    n_tasks = get_n_tasks()
-    progress = tqdm.tqdm(desc='Downloading', total=n_tasks, unit='tasks')
-    r = get_tasks()
+    progress = tqdm.tqdm(desc='Downloading', unit=obj)
+    r = get_objects(obj)
     last_fetched = r.json()
     data = last_fetched
     progress.update(len(last_fetched))
     respect_rate_limits(r, progress)
     while _not_exhausted(last_fetched):
-        r = get_tasks(len(data))
+        r = get_objects(obj, len(data))
         last_fetched = r.json()
         data += last_fetched
         progress.update(len(last_fetched))
@@ -77,9 +66,10 @@ def get_tasks_df():
 
 
 @click.command()
-def main():
-    df = get_tasks_df()
-    write_to_csv(df, 'tasks.csv')
+@click.argument('obj')
+def main(obj):
+    df = get_pybossa_df(obj)
+    write_to_csv(df, '{}.csv'.format(obj))
 
 
 if __name__ == '__main__':
