@@ -1,6 +1,8 @@
+# -*- coding: utf8 -*-
 """
 Helper functions.
 """
+import re
 import os
 import pandas
 from diskcache import FanoutCache
@@ -59,3 +61,15 @@ def get_volumes_df():
     df = pandas.read_csv(in_path)
     df.set_index('manifest_uri', inplace=True, verify_integrity=True)
     return df
+
+
+def normalise_shelfmark(sm):
+    """Normalize shelfmarks."""
+    sm = "".join(sm.split())
+    sm = re.sub(r',|\.|;|:', r'', sm)
+    sm = re.sub(r'\[|\{', r'\(', sm)
+    sm = re.sub(r'\]|\}', r'\)', sm)
+    sm = sm.replace('_', '-')
+    sm = sm.replace('&', ' & ')
+    sm = re.sub(r'(\d+)', lambda m: m.group(1).rjust(7, ' '), sm)
+    return sm.upper()
