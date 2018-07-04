@@ -1,5 +1,8 @@
 #-*- coding: utf8 -*-
-
+"""
+Generate Convert-a-Card index of OCLC numbers against shelfmarks.
+"""
+import re
 import csv
 import pandas
 import click
@@ -38,6 +41,21 @@ def lookup_reference(task_id, reference_df):
     return series.transcription
 
 
+def fix_unclosed_brackets(value):
+    """Fix unclosed brackets at the end of shelfmarks."""
+    s = value
+    if re.search(r'\([^\)]*$', s):
+        s = '{})'.format(s)
+    if re.search(r'\[[^\]]*$', s):
+        s = '{}]'.format(s)
+    return s
+
+
+def capitalise_chi(value):
+    """CHI at the start of shelfmarks should always be capitalised."""
+    return re.sub(r'(?i)^chi\.', 'CHI.', value)
+
+
 def get_cac_index_df():
     """Return the Convert-a-Card OCLC to shelfmark index as a dataframe."""
     df = get_cac_annotations()
@@ -50,6 +68,8 @@ def get_cac_index_df():
 
     df['reference'] = df['task_id'].apply(lookup_reference,
                                           args=(reference_df,))
+    df['reference'] = df['reference'].apply(fix_unclosed_brackets)
+    df['reference'] = df['reference'].apply(capitalise_chi)
 
     df.drop_duplicates(subset=['reference'], inplace=True)
     return df[['control_number', 'reference']]
