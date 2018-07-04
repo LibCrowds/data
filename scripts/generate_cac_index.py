@@ -72,6 +72,7 @@ def get_cac_index_df():
     df['reference'] = df['reference'].apply(capitalise_chi)
 
     df.drop_duplicates(subset=['reference'], inplace=True)
+    df.set_index('task_id', verify_integrity=True, inplace=True)
     return df[['control_number', 'reference']]
 
 
