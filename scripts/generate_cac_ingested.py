@@ -19,8 +19,8 @@ def get_marc_file_paths():
     return [os.path.join(path, fn) for fn in os.listdir(path)]
 
 
-@CACHE.memoize(typed=True, expire=3600, tag='cac_summary')
-def get_cac_summary_df():
+@CACHE.memoize(typed=True, expire=3600, tag='cac_ingested')
+def get_cac_ingested_df():
     """Return a summary of records already created from Convert-a-Card."""
     paths = get_marc_file_paths()
     out = []
@@ -29,7 +29,6 @@ def get_cac_summary_df():
             reader = MARCReader(f)
             for record in reader:
                 out.append({
-                    'title': record.title(),
                     'language': record['008'].data[35:38],
                     'shelfmark': record['852']['j']
                 })
@@ -40,8 +39,8 @@ def get_cac_summary_df():
 
 @click.command()
 def main():
-    df = get_cac_summary_df()
-    write_to_csv(df, 'cac_summary.csv')
+    df = get_cac_ingested_df()
+    write_to_csv(df, 'cac_ingested.csv')
 
 
 if __name__ == "__main__":
