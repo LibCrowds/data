@@ -7,6 +7,7 @@ import csv
 import pandas
 import click
 
+from get_pybossa_objects import get_pybossa_df
 from get_annotations import get_annotations_df
 from generate_cac_summary import get_cac_summary_df
 from helpers import write_to_csv, get_tag, get_task_id, get_transcription
@@ -72,8 +73,24 @@ def add_created_column(df):
     """Add column to identify if a record has been created for a shelfmark."""
     summary_df = get_cac_summary_df()
     normalised_shelfmarks = summary_df['normalised_shelfmark'].tolist()
-    df['normalised_shelfmark'] = df['shelfmark'].apply(normalise_shelfmark)
-    df['created'] = df['normalised_shelfmark'].apply(lambda s: s in normalised_shelfmarks)
+    df['norm'] = df['shelfmark'].apply(normalise_shelfmark)
+    df['created'] = df['norm'].apply(lambda s: s in normalised_shelfmarks)
+    return df
+
+
+def get_project_name(task_id, tasks_df, projects_df):
+    """Return the project name from the task ID."""
+    task = tasks_df.loc[int(task_id)]
+    project = projects_df.loc[int(task.project_id)]
+    return project['name']
+
+
+def add_project_column(df):
+    """Add column for the project title."""
+    tasks_df = get_pybossa_df('task')
+    projects_df = get_pybossa_df('project')
+    df['project'] = df['task_id'].apply(get_project_name,
+                                        args=(tasks_df, projects_df))
     return df
 
 
@@ -85,14 +102,17 @@ def get_cac_index_df():
     df = df[df['motivation'] == 'describing']
     df = add_shelfmark_column(df)
     df = add_created_column(df)
+    df = add_project_column(df)
     df = df[df['tag'] == 'control_number']
     df = df.rename(columns={'transcription': 'control_number'})
     df.drop_duplicates(subset=['shelfmark'], inplace=True)
     df.set_index('task_id', verify_integrity=True, inplace=True)
+    df.sort_values('project', inplace=True)
     return df[[
       'control_number',
       'shelfmark',
-      'created'
+      'created',
+      'project'
     ]]
 
 
