@@ -8,7 +8,9 @@ import pandas
 import click
 
 from get_annotations import get_annotations_df
+from generate_cac_summary import get_cac_summary_df
 from helpers import write_to_csv, get_tag, get_task_id, get_transcription
+from helpers import CACHE, normalise_shelfmark
 
 
 def get_cac_annotations():
@@ -56,24 +58,42 @@ def capitalise_chi(value):
     return re.sub(r'(?i)^chi\.', 'CHI.', value)
 
 
+def add_shelfmark_column(df):
+    """Add shelfmark column."""
+    reference_df = create_reference_lookup_df(df)
+    df['shelfmark'] = df['task_id'].apply(lookup_reference,
+                                          args=(reference_df,))
+    df['shelfmark'] = df['shelfmark'].apply(fix_unclosed_brackets)
+    df['shelfmark'] = df['shelfmark'].apply(capitalise_chi)
+    return df
+
+
+def add_created_column(df):
+    """Add column to identify if a record has been created for a shelfmark."""
+    summary_df = get_cac_summary_df()
+    normalised_shelfmarks = summary_df['normalised_shelfmark'].tolist()
+    df['normalised_shelfmark'] = df['shelfmark'].apply(normalise_shelfmark)
+    df['created'] = df['normalised_shelfmark'].apply(lambda s: s in normalised_shelfmarks)
+    return df
+
+
+# @CACHE.memoize(typed=True, expire=3600, tag='cac_index')
 def get_cac_index_df():
     """Return the Convert-a-Card OCLC to shelfmark index as a dataframe."""
     df = get_cac_annotations()
     df = add_columns(df)
     df = df[df['motivation'] == 'describing']
-    reference_df = create_reference_lookup_df(df)
-
+    df = add_shelfmark_column(df)
+    df = add_created_column(df)
     df = df[df['tag'] == 'control_number']
     df = df.rename(columns={'transcription': 'control_number'})
-
-    df['reference'] = df['task_id'].apply(lookup_reference,
-                                          args=(reference_df,))
-    df['reference'] = df['reference'].apply(fix_unclosed_brackets)
-    df['reference'] = df['reference'].apply(capitalise_chi)
-
-    df.drop_duplicates(subset=['reference'], inplace=True)
+    df.drop_duplicates(subset=['shelfmark'], inplace=True)
     df.set_index('task_id', verify_integrity=True, inplace=True)
-    return df[['control_number', 'reference']]
+    return df[[
+      'control_number',
+      'shelfmark',
+      'created'
+    ]]
 
 
 @click.command()

@@ -9,7 +9,7 @@ import pandas
 import click
 from pymarc import MARCReader
 
-from helpers import write_to_csv, normalise_shelfmark
+from helpers import write_to_csv, normalise_shelfmark, CACHE
 
 
 def get_marc_file_paths():
@@ -19,6 +19,7 @@ def get_marc_file_paths():
     return [os.path.join(path, fn) for fn in os.listdir(path)]
 
 
+@CACHE.memoize(typed=True, expire=3600, tag='cac_summary')
 def get_cac_summary_df():
     """Return a summary of records already created from Convert-a-Card."""
     paths = get_marc_file_paths()
