@@ -79,7 +79,7 @@ def add_shelfmark_column(df):
 
 def filter_new_items(df):
     """Return rows where a record has not already been created."""
-    ingested_df = get_cac_ingested_df()
+    ingested_df = get_ingested_df()
     norm_sm = ingested_df['normalised_shelfmark'].tolist()
     df['ingested'] = df['shelfmark'].apply(lambda s: normalise_shelfmark(s) in norm_sm)
     df = df[~df.ingested]
@@ -102,7 +102,7 @@ def add_project_column(df):
     return df
 
 
-def get_cac_index_df():
+def get_new_df():
     """Return the Convert-a-Card OCLC to shelfmark index as a dataframe."""
     df = get_cac_annotations()
     df = add_columns(df)
@@ -118,12 +118,11 @@ def get_cac_index_df():
     return df[[
       'control_number',
       'shelfmark',
-      'created',
       'project'
     ]]
 
 
-def get_cac_ingested_df():
+def get_ingested_df():
     """Return a summary of records already created from Convert-a-Card."""
     paths = get_marc_file_paths()
     out = []
@@ -142,11 +141,11 @@ def get_cac_ingested_df():
 
 @click.command()
 def main():
-    df = get_cac_index_df()
-    write_to_csv(df, 'cac_index.csv')
+    new_df = get_new_df()
+    write_to_csv(new_df, 'data', 'cac', 'new.csv')
 
-    df = get_cac_ingested_df()
-    write_to_csv(df, 'cac_ingested.csv')
+    ingested_df = get_ingested_df()
+    write_to_csv(ingested_df, 'data', 'cac', 'ingested.csv')
 
 
 if __name__ == "__main__":

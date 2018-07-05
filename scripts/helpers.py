@@ -4,6 +4,7 @@ Helper functions.
 """
 import re
 import os
+import errno
 import pandas
 from diskcache import FanoutCache
 
@@ -11,10 +12,22 @@ from diskcache import FanoutCache
 CACHE = FanoutCache('../cache')
 
 
-def write_to_csv(df, fn):
+def mkdirs(path):
+    """Make directories if they do not exist."""
+    try:
+        os.makedirs(path)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
+
+
+def write_to_csv(df, *path_parts):
     """Save a dataframe to CSV."""
     here = os.path.abspath(os.path.dirname(__file__))
-    out_path = os.path.join(os.path.dirname(here), 'data', fn)
+    _dir = os.path.join(os.path.dirname(here), *path_parts[:-1])
+    fn = path_parts[-1]
+    mkdirs(_dir)
+    out_path = os.path.join(_dir, fn)
     df.to_csv(out_path, encoding='utf8', index=False)
     print('CSV file saved to {}'.format(out_path))
 
