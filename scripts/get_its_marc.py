@@ -161,7 +161,7 @@ def get_marc_df():
 @click.command()
 def main():
     df = get_marc_df()
-    write_to_csv(df, 'its_marc.csv')
+    write_to_csv(df, 'its', 'marc.csv')
 
 
 if __name__ == "__main__":

@@ -50,7 +50,7 @@ def add_fragment_selectors_to_cols(df):
 
 
 @CACHE.memoize(typed=True, expire=3600, tag='its_title_index')
-def get_its_title_index_df():
+def get_title_index_df():
     """Return title index as a dataframe."""
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
     df = get_annotations_df(url)
@@ -84,8 +84,8 @@ def get_its_title_index_df():
 
 @click.command()
 def main():
-    df = get_its_title_index_df()
-    write_to_csv(df, 'its_title_index.csv')
+    df = get_title_index_df()
+    write_to_csv(df, 'its', 'title-index.csv')
 
 
 if __name__ == "__main__":

@@ -80,8 +80,8 @@ def add_link(df):
     return df
 
 
-@CACHE.memoize(typed=True, expire=3600, tag='its_plays')
-def get_its_plays_df():
+@CACHE.memoize(typed=True, expire=3600, tag='its_performances')
+def get_performances_df():
     """Return a dataframe of performances."""
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
     df = get_annotations_df(url)
@@ -103,8 +103,8 @@ def get_its_plays_df():
 
 @click.command()
 def main():
-    df = get_its_plays_df()
-    write_to_csv(df, 'its_plays.csv')
+    df = get_performances_df()
+    write_to_csv(df, 'its', 'performances.csv')
 
 
 if __name__ == "__main__":

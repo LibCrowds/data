@@ -6,7 +6,7 @@ import click
 import pandas
 import datetime
 
-from generate_its_plays import get_its_plays_df
+from get_its_performances import get_performances_df
 from helpers import write_to_csv
 
 
@@ -40,9 +40,9 @@ def get_tweet(row):
     return '#Onthisday, in {0}, {1} was performed at {2} {3}'.format(row['year'], row['title'], row['theatre'], row['link'])
 
 
-def get_its_tweets_df(include_all=False):
+def get_tweets_df(include_all=False):
     """Return In the Spotlight tweets in a dataframe."""
-    df = get_its_plays_df()
+    df = get_performances_df()
     df = filter_incomplete_dates(df)
     df = add_date_parts(df)
 
@@ -62,8 +62,8 @@ def get_its_tweets_df(include_all=False):
 @click.command()
 @click.option('--all', is_flag=True, default=False)
 def main(all):
-    df = get_its_tweets_df(all)
-    write_to_csv(df, 'its_tweets.csv')
+    df = get_tweets_df(all)
+    write_to_csv(df, 'its', 'tweets.csv')
 
 
 if __name__ == "__main__":
