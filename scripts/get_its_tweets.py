@@ -40,13 +40,13 @@ def get_tweet(row):
     return '#Onthisday, in {0}, {1} was performed at {2} {3}'.format(row['year'], row['title'], row['theatre'], row['link'])
 
 
-def get_tweets_df(include_all=False):
+def get_tweets_df(today=False):
     """Return In the Spotlight tweets in a dataframe."""
     df = get_performances_df()
     df = filter_incomplete_dates(df)
     df = add_date_parts(df)
 
-    if not include_all:
+    if today:
         df = filter_by_today(df)
 
     if df.empty:
@@ -60,9 +60,9 @@ def get_tweets_df(include_all=False):
 
 
 @click.command()
-@click.option('--all', is_flag=True, default=False)
-def main(all):
-    df = get_tweets_df(all)
+@click.option('--today', is_flag=True, default=False)
+def main(today):
+    df = get_tweets_df(today)
     write_to_csv(df, 'its', 'tweets.csv')
 
 
