@@ -93,12 +93,25 @@ def get_project_name(task_id, tasks_df, projects_df):
     return project['name']
 
 
+def get_link(task_id, tasks_df):
+    """Return the task link from the task ID."""
+    task = tasks_df.loc[int(task_id)]
+    return task['info']['link']
+
+
 def add_project_column(df):
     """Add column for the project title."""
     tasks_df = get_pybossa_df('task')
     projects_df = get_pybossa_df('project')
     df['project'] = df['task_id'].apply(get_project_name,
-                                        args=(tasks_df, projects_df))
+                                        args=(tasks_df, projects_df,))
+    return df
+
+
+def add_link_column(df):
+    """Add column for the image link."""
+    tasks_df = get_pybossa_df('task')
+    df['link'] = df['task_id'].apply(get_link, args=(tasks_df,))
     return df
 
 
@@ -110,6 +123,7 @@ def get_new_df():
     df = add_shelfmark_column(df)
     df = filter_new_items(df)
     df = add_project_column(df)
+    df = add_link_column(df)
     df = df[df['tag'] == 'control_number']
     df = df.rename(columns={'transcription': 'control_number'})
     df.drop_duplicates(subset=['shelfmark'], inplace=True)
@@ -118,7 +132,8 @@ def get_new_df():
     return df[[
       'control_number',
       'shelfmark',
-      'project'
+      'project',
+      'link'
     ]]
 
 

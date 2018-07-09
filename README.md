@@ -2,21 +2,58 @@
 
 > Data management scripts for LibCrowds projects.
 
-This repository contains a set of scripts for downloading and manipulating
-LibCrowds results data.
-
+This repository contains a set of Python scripts for downloading and
+manipulating LibCrowds data.
 
 ## Installation
 
-```
+Run the following commands to install the required packages.
+
+```bash
+# clone
+git clone https://github.com/LibCrowds/data
+
+# change directory
+cd data
+
+# install
 pip install -r requirements.txt
 ```
 
+## Convert-a-Card
 
-## Usage
+A set of CSV files containing the Convert-a-Card results data can be produced
+by running the following command.
 
-The scripts contained in this repository are described below.
+```
+python scripts/cac.py
+```
 
+The following files will be saved to [data/cac](data/cac).
+
+### new.csv
+
+This file contains all results where a minimum of two volunteers have
+selected the same WorldCat record and transcribed the same British Library
+shelfmark. Entries already ingested (see below) will be excluded from this
+file. So, the intention is that this file can be produced and sent off
+periodically to metadata services, under work request number WR15.045.
+
+### ingested.csv
+
+After the above file is sent off to metadata services a `.lex` file containing
+the records that will be created should be returned. This file will contain
+the copies of WorldCat records, such as those seen in
+[metadata/convert-a-card](metadata/convert-a-card), modified with the British
+Library shelfmark. By storing copies of these files
+in this repository we can track the shelfmarks for which records have already
+been created. This is how we identify any new records to be created, so it
+is important that any `.lex` files returned from metadata services are saved
+to [metadata/convert-a-card](metadata/convert-a-card) and the changes
+**pushed back to GitHub**.
+
+
+## In the Spotlight
 
 ### Download annotations
 
