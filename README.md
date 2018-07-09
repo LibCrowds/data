@@ -22,8 +22,7 @@ pip install -r requirements.txt
 
 ## Convert-a-Card
 
-A set of CSV files containing the Convert-a-Card results data can be produced
-by running the following command.
+Convert-a-Card results data can be produced by running the following command.
 
 ```
 python scripts/cac.py
@@ -55,90 +54,34 @@ to [metadata/convert-a-card](metadata/convert-a-card) and the changes
 
 ## In the Spotlight
 
-### Download annotations
-
-Download all annotations for a collection and load them into a pandas
-dataframe. This functionality is used as part of the input for various other
-scripts in this repository. If run as a standalone script, using the command
-below, the annotations will be output to a CSV file.
+In the Spotlight results data can be produced by running the following command.
 
 ```
-python scripts/get_annotations.py http://annotations.libcrowds.com/annotations/my-collection
+python scripts/its.py
 ```
 
-The CSV file will be saved to `data/annotations.csv`.
+The following files will be saved to [data/its](data/its).
 
+### title-index.csv
 
-### Download PYBOSSA domain objects
+This file is used to enhance the structural metadata in the IIIF manifests,
+which in turn generates an index of titles in the Universal Viewer.
+It contains the first appearing title on each sheet, followed by "etc." for
+multiple titles, mapped against the related L-ARKs and canvas ARKs against
+each title.
 
-Download PYBOSSA domain objects and load them into a pandas dataframe. This
-functionality is used as part of the input for various other scripts in this
-repository. If run as a standalone script, using the command below, the task
-data will be output to a CSV file. The `<domain_object>` argument appended to
-the end of the script should be any valid PYBOSSA domain object, such as
-project, task, taskrun or result.
+## marc.csv
 
-```
-python scripts/get_pybossa_objects.py <domain_object>
-```
+This file is used to generate MARC records from the results data. It should be
+passed to metadata services and work request number [TBC].
 
-The CSV file will be saved to `data/{domain_object}.csv`.
+## performances.csv
 
+Each row in this file contains all known data for a specific performance
+(e.g. title, date, genre and theatre).
 
-### Generate In the Spotlight title index
+## tweets.csv
 
-Get the first appearing title on each sheet, followed by "etc." for
-multiple titles. Return these as a CSV file mapping the related L-ARKs and
-canvas ARKs against each title. This file can be used enhance the structural
-metadata in the IIIF manifests, generating an index of titles in the Universal
-Viewer.
-
-```
-python scripts/generate_its_title_index.py
-```
-
-The CSV file will be saved to `data/its_title_index.csv`.
-
-
-### Generate In the Spotlight MARC template
-
-Generate a CSV file containing In the Spotlight results data to be passed to
-Metadata Services for the creation of MARC records.
-
-```
-python scripts/generate_its_marc.py
-```
-
-The CSV file will be saved to `data/its_marc.csv`.
-
-### Generate In the Spotlight performances dataframe
-
-Generate a CSV file where each row contains the data collected for a specific
-performance (e.g. title, date, genre and theatre).
-
-```
-python scripts/generate_its_plays.py
-```
-
-The CSV file will be saved to `data/its_plays.csv`.
-
-### Generate In the Spotlight Tweets
-
-Generate [#onthisday](https://twitter.com/hashtag/onthisday) tweets based on
-In the Spotlight performance data and save to CSV. The following command
-will produce a CSV file containing a tweet for each play performed on today's
-day and month. Note that the file may be blank if there is no data available
-for the given day and month.
-
-```
-python scripts/generate_its_tweets.py
-```
-
-It is also possible to produce tweets for every day and month by adding the
-`--all` argument.
-
-```
-python scripts/generate_its_tweets.py --all
-```
-
-The CSV file will be saved to `data/its_tweets.csv`.
+This file contains [#onthisday](https://twitter.com/hashtag/onthisday) tweets
+based on all known performance data. Tweets are produced for every day and
+month of the year.

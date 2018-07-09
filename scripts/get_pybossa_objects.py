@@ -1,8 +1,17 @@
 # -*- coding: utf8 -*-
 """
-Download all PYBOSSA tasks and load into a dataframe.
+Download PYBOSSA domain objects and load them into a pandas dataframe. This
+functionality is used as part of the input for various other scripts in this
+repository. If run as a standalone script, using the command below, the task
+data will be output to a CSV file. The `<domain_object>` argument appended to
+the end of the script should be any valid PYBOSSA domain object, such as
+project, task, taskrun or result.
 
-If run from as a standalone script the dataframe is saved as a CSV.
+```
+python scripts/get_pybossa_objects.py <domain_object>
+```
+
+The CSV file will be saved to `data/{domain_object}.csv`.
 """
 import tqdm
 import time

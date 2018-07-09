@@ -1,8 +1,15 @@
 # -*- coding: utf8 -*-
 """
-Download all annotations for a collection and load into a dataframe.
+Download all annotations for a collection and load them into a pandas
+dataframe. This functionality is used as part of the input for various other
+scripts in this repository. If run as a standalone script, using the command
+below, the annotations will be output to a CSV file.
 
-If run from as a standalone script the dataframe is saved as a CSV.
+```
+python scripts/get_annotations.py http://annotations.libcrowds.com/annotations/my-collection
+```
+
+The CSV file will be saved to `data/annotations.csv`.
 """
 import sys
 import tqdm
