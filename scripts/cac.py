@@ -1,6 +1,6 @@
 #-*- coding: utf8 -*-
 """
-Generate Convert-a-Card index of OCLC numbers against shelfmarks.
+Generate Convert-a-Card data.
 """
 import os
 import re
