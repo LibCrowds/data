@@ -70,17 +70,17 @@ It contains the first appearing title on each sheet, followed by "etc." for
 multiple titles, mapped against the related L-ARKs and canvas ARKs against
 each title.
 
-## marc.csv
+### marc.csv
 
 This file is used to generate MARC records from the results data. It should be
 passed to metadata services and work request number [TBC].
 
-## performances.csv
+### performances.csv
 
 Each row in this file contains all known data for a specific performance
 (e.g. title, date, genre and theatre).
 
-## tweets.csv
+### tweets.csv
 
 This file contains [#onthisday](https://twitter.com/hashtag/onthisday) tweets
 based on all known performance data. Tweets are produced for every day and
