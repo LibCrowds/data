@@ -7,3 +7,4 @@ python-dateutil>=2.7.3, <3.0.0
 tqdm>=4.23.4, <5.0.0
 diskcache>=3.0.6, <4.0.0
 pymarc>=3.1.10, <4.0.0
+flatten_json>=0.1.6, <1.0.0

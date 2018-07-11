@@ -75,6 +75,14 @@ each title.
 This file is used to generate MARC records from the results data. It should be
 passed to metadata services and work request number [TBC].
 
+### sheets.csv
+
+Each row in this file gives all of the data we have for a single sheet,
+identified by the IIIF canvas ID in the *id* column. The *sys_no* column
+identifies the volume-level record, from which we can identify any information
+we already have about location etc. We then have our crowdsourced data
+against keys in the form *entity_n* (e.g. *title_0*, *title_1*, *date_0*).
+
 ### performances.csv
 
 Each row in this file contains all known data for a specific performance
