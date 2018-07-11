@@ -85,7 +85,7 @@ def get_title_index_df():
 @click.command()
 def main():
     df = get_title_index_df()
-    write_to_csv(df, 'its', 'title-index.csv')
+    write_to_csv(df, 'data', 'its', 'title-index.csv')
 
 
 if __name__ == "__main__":

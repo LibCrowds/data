@@ -63,7 +63,7 @@ def get_tweets_df(today=False):
 @click.option('--today', is_flag=True, default=False)
 def main(today):
     df = get_tweets_df(today)
-    write_to_csv(df, 'its', 'tweets.csv')
+    write_to_csv(df, 'data', 'its', 'tweets.csv')
 
 
 if __name__ == "__main__":

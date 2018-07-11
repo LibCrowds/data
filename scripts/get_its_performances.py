@@ -104,7 +104,7 @@ def get_performances_df():
 @click.command()
 def main():
     df = get_performances_df()
-    write_to_csv(df, 'its', 'performances.csv')
+    write_to_csv(df, 'data', 'its', 'performances.csv')
 
 
 if __name__ == "__main__":

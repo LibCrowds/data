@@ -91,7 +91,7 @@ def get_annotations_df(url):
 @click.argument('url')
 def main(url):
     df = get_annotations_df(url)
-    write_to_csv(df, 'annotations.csv')
+    write_to_csv(df, 'data', 'annotations.csv')
 
 
 if __name__ == '__main__':

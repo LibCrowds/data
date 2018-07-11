@@ -78,7 +78,7 @@ def get_pybossa_df(obj):
 @click.argument('obj')
 def main(obj):
     df = get_pybossa_df(obj)
-    write_to_csv(df, '{}.csv'.format(obj))
+    write_to_csv(df, 'data', '{}.csv'.format(obj))
 
 
 if __name__ == '__main__':
