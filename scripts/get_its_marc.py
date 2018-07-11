@@ -12,7 +12,7 @@ from collections import OrderedDict
 
 from get_annotations import get_annotations_df
 from helpers import write_to_csv, get_tag, get_transcription, get_source
-from helpers import get_volumes_df, CACHE
+from helpers import get_volumes_df
 
 
 def get_static_fields():
@@ -123,7 +123,6 @@ def add_fields(df):
     return df
 
 
-@CACHE.memoize(typed=True, expire=3600, tag='its_marc')
 def get_marc_df():
     """Return the MARC template dataframe."""
     url = 'https://annotations.libcrowds.com/annotations/playbills-results/'
@@ -145,8 +144,8 @@ def get_marc_df():
         title_fields = get_title_fields(group_df, volume_md)
         genre_fields = get_genre_fields(group_df, volume_md)
 
-        # Skip rows without titles or dates for now
-        if not all(bool(d) for d in [title_fields, date_fields]):
+        # Skip rows without titles
+        if not title_fields:
             continue
 
         row = get_static_fields()
@@ -161,7 +160,7 @@ def get_marc_df():
 @click.command()
 def main():
     df = get_marc_df()
-    write_to_csv(df, 'its', 'marc.csv')
+    write_to_csv(df, 'data', 'its', 'marc.csv')
 
 
 if __name__ == "__main__":
