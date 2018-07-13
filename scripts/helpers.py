@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 """
 Helper functions.
 """
@@ -28,7 +28,7 @@ def write_to_csv(df, *path_parts):
     fn = path_parts[-1]
     mkdirs(_dir)
     out_path = os.path.join(_dir, fn)
-    df.to_csv(out_path, encoding='utf8', index=False)
+    df.to_csv(out_path, encoding='utf-8', index=False)
     print('CSV file saved to {}'.format(out_path))
 
 

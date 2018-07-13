@@ -1,4 +1,4 @@
-#-*- coding: utf8 -*-
+#-*- coding: utf-8 -*-
 """
 Generate #onthisday tweets from In the Spotlight data.
 """

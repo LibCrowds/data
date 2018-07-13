@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 """
 Produce a JSON file used to enhance structural metadata in the IIIF manifests.
 """

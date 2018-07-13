@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 """
 Download all annotations for a collection and load them into a pandas
 dataframe. This functionality is used as part of the input for various other
