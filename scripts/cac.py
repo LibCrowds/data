@@ -42,13 +42,17 @@ def add_columns(df):
 def create_reference_lookup_df(df):
     """Return a dataframe indexed by task_id for looking up the reference."""
     df = df[df['tag'] == 'reference']
+    df.drop_duplicates(subset=['task_id'], inplace=True)
     df.set_index('task_id', verify_integrity=True, inplace=True)
     return df
 
 
 def lookup_reference(task_id, reference_df):
     """Lookup the reference for a task ID."""
-    series = reference_df.loc[task_id]
+    try:
+        series = reference_df.loc[task_id]
+    except KeyError:
+        return ''
     return series.transcription
 
 
