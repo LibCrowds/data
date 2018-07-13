@@ -7,6 +7,7 @@ import click
 from get_its_performances import get_performances_df
 from get_its_tweets import get_tweets_df
 from get_its_title_index import get_title_index_df
+from get_its_sheets import get_sheets_df
 from helpers import write_to_csv
 
 
@@ -20,6 +21,9 @@ def main():
 
     tweets_df = get_tweets_df()
     write_to_csv(tweets_df, 'data', 'its', 'tweets.csv')
+
+    sheets_df = get_sheets_df()
+    write_to_csv(sheets_df, 'data', 'its', 'sheets.csv')
 
 
 if __name__ == "__main__":
