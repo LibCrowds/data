@@ -98,6 +98,7 @@ def get_performances_df():
     df = add_volume_metadata(df)
     df = add_link(df)
     df = df[['title', 'date', 'genre', 'link', 'theatre', 'city', 'source']]
+    df.drop_duplicates(inplace=True)
     return df
 
 
